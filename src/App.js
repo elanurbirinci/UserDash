@@ -47,7 +47,14 @@ function App() {
       id:2,
       name:'Leyla',
       username:'Aslan',
-      email:'leyla@gmail.com',
+      email:'asl@gmail.com',
+      role:'Author'
+    },
+    {
+      id:3,
+      name:'Ali',
+      username:'Şahin',
+      email:'shn@gmail.com',
       role:'Author'
     }
     
@@ -55,11 +62,16 @@ function App() {
 
   const [records, setRecords]=useState(data);
 
-  function handleFilter(event){
-    const newData=data.filter(row =>{
-      return row.name.toLowerCase().includes(event.target.value.toLowerCase())
-    })
-    setRecords(newData)
+  function handleFilter(event) {
+    const searchQuery = event.target.value.toLowerCase();
+    const newData = data.filter(row => {
+      // İsim veya e-posta alanında arama yap
+      return (
+        row.name.toLowerCase().includes(searchQuery) ||
+        row.email.toLowerCase().includes(searchQuery)
+      );
+    });
+    setRecords(newData);
   }
 
   return (
