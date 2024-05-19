@@ -41,6 +41,9 @@ function App() {
   const avatars = [
     'https://placehold.co/600x400/orange/white',
     'https://placehold.co/30x30',
+    'https://placehold.co/600x400/orange/white',
+    'https://placehold.co/30x30',
+    'https://placehold.co/600x400/orange/white',
   ];
 
   const columns = [
@@ -94,7 +97,8 @@ function App() {
       name: 'ela',
       username: 'yılmaz',
       email: 'kfc@vfkvf',
-      role: 'Editor'
+      role: 'Editor',
+      
     },
     {
       id: 2,
@@ -135,7 +139,9 @@ function App() {
 
   const [records, setRecords] = useState(data);
   const [open, setOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
+    id: null,
     name: '',
     username: '',
     email: '',
@@ -205,6 +211,7 @@ function App() {
       role: row.role,
       selectedAvatar: row.selectedAvatar || null
     });
+    setIsEditMode(true);
     setOpen(true);
   }
 
@@ -231,7 +238,9 @@ function App() {
 
   const handleOpen = () => {
     setOpen(true);
+    setIsEditMode(false);
     setFormData({
+      id: null,
       name: '',
       username: '',
       email: '',
@@ -251,19 +260,24 @@ function App() {
   }
 
   const handleSubmit = () => {
-    const newRecord = {
-      id: records.length + 1,
-      ...formData
-    };
-    setRecords([...records, newRecord]);
+    if (isEditMode) {
+      const updatedRecords = records.map(row => 
+        row.id === formData.id ? formData : row
+      );
+      setRecords(updatedRecords);
+    } else {
+      const newRecord = {
+        id: records.length + 1,
+        ...formData
+      };
+      setRecords([...records, newRecord]);
+    }
     setOpen(false);
   }
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   }
-
-  
 
   return (
     <div className="App">
@@ -317,7 +331,7 @@ function App() {
         pagination={false}
         customStyles={customStyles}
       />
-      <CustomPagination  count={Math.ceil(filteredRecords.length / rowsPerPage)} color="primary" onChange={handlePageChange} />
+      <CustomPagination count={Math.ceil(filteredRecords.length / rowsPerPage)} color="primary" onChange={handlePageChange} />
 
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
@@ -380,7 +394,9 @@ function App() {
         </DialogContent>
         <DialogActions>
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleSubmit} variant="contained" style={{ backgroundColor: '#2940D3', color: 'white' }}>Create User</Button>
+            <Button onClick={handleSubmit} variant="contained" style={{ backgroundColor: '#2940D3', color: 'white' }}>
+              {isEditMode ? 'Update User' : 'Create User'}
+            </Button>
           </Box>
         </DialogActions>
       </Dialog>
