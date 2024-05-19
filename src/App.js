@@ -6,10 +6,31 @@ import { Tab, Tabs, TabList,  } from 'react-tabs';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CustomPagination from './component/CustomPagination';
 
 function App() {
   const [records, setRecords] = useState([
     {
+      id: 1,
+      name: 'Ela',
+      username: 'Yılmaz',
+      email: 'ela@gmail.com',
+      role: 'Administrator'
+    },
+    {
+      id: 2,
+      name: 'Leyla',
+      username: 'Aslan',
+      email: 'asl@gmail.com',
+      role: 'Author'
+    },
+    {
+      id: 3,
+      name: 'Ali',
+      username: 'Şahin',
+      email: 'shn@gmail.com',
+      role: 'Author'
+    },{
       id: 1,
       name: 'Ela',
       username: 'Yılmaz',
@@ -34,6 +55,8 @@ function App() {
 
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5); 
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -52,6 +75,7 @@ function App() {
       );
     });
     setRecords(newData);
+    setCurrentPage(1);
   }
 
   function handleEdit(row) {
@@ -102,14 +126,15 @@ function App() {
 
   // Tab tıklamasını işleyen fonksiyon
   const handleTabClick = (index) => {
-    setActiveTab(index); // Aktif sekme indeksini güncelle
+    setActiveTab(index); 
+    setCurrentPage(1);
   };
 
   // Aktif sekmenin role değerini belirlemek için bir fonksiyon
   const getRoleFilter = () => {
     switch (activeTab) {
       case 0:
-        return true; // Tüm kullanıcıları göstermek için filtre yok
+        return true; 
       case 1:
         return 'Contributor';
       case 2:
@@ -126,13 +151,15 @@ function App() {
   // DataTable bileşeni için role göre filtreleme işlevi
   const filteredRecords = records.filter(record => {
     if (activeTab === 0) {
-      return true; // Tüm kullanıcıları göstermek için filtre yok
+      return true; 
     } else {
       return record.role === getRoleFilter();
     }
   });
   
-  
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  }
   
 
   const columns = [
@@ -254,6 +281,7 @@ function App() {
         pagination
         customStyles={customStyles}
       />
+      <CustomPagination  count={Math.ceil(filteredRecords.length / rowsPerPage)} color="primary" onChange={handlePageChange} />
     </div>
   );
 }
