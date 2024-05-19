@@ -332,8 +332,13 @@ function App() {
         customStyles={customStyles}
         onSelectedRowsChange={handleRowSelected}
       />
-      <CustomPagination count={Math.ceil(filteredRecords.length / rowsPerPage)} color="primary" onChange={handlePageChange} />
-
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+        <CustomPagination
+          count={Math.ceil(filteredRecords.length / rowsPerPage)}
+          color="primary"
+          onChange={handlePageChange}
+        />
+      </Box>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <TextField
