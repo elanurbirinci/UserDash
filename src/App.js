@@ -1,7 +1,8 @@
 import './App.css';
 import DataTable from 'react-data-table-component';
 import React, { useState } from 'react';
-import {IconButton,TextField , Grid,Typography} from '@mui/material';
+import {Button,IconButton,TextField , Grid,Typography} from '@mui/material';
+import { Tab, Tabs, TabList,  } from 'react-tabs';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -32,6 +33,7 @@ function App() {
   ]);
 
   const [open, setOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -74,7 +76,7 @@ function App() {
     const newData = records.filter(row => !row.selected);
     setRecords(newData);
   }
-  
+
   function handleAvatarSelect(id) {
     const updatedRecords = records.map(row => {
       if (row.id === id) {
@@ -86,6 +88,51 @@ function App() {
     setOpen(false);
   }
 
+
+  const handleOpen = () => {
+    setOpen(true);
+    setFormData({
+      name: '',
+      username: '',
+      email: '',
+      role: '',
+      selectedAvatar: null
+    });
+  };
+
+  // Tab tıklamasını işleyen fonksiyon
+  const handleTabClick = (index) => {
+    setActiveTab(index); // Aktif sekme indeksini güncelle
+  };
+
+  // Aktif sekmenin role değerini belirlemek için bir fonksiyon
+  const getRoleFilter = () => {
+    switch (activeTab) {
+      case 0:
+        return true; // Tüm kullanıcıları göstermek için filtre yok
+      case 1:
+        return 'Contributor';
+      case 2:
+        return 'Author';
+      case 3:
+        return 'Administrator';
+      case 4:
+        return 'Subscriber';
+      default:
+        return '';
+    }
+  };
+
+  // DataTable bileşeni için role göre filtreleme işlevi
+  const filteredRecords = records.filter(record => {
+    if (activeTab === 0) {
+      return true; // Tüm kullanıcıları göstermek için filtre yok
+    } else {
+      return record.role === getRoleFilter();
+    }
+  });
+  
+  
   
 
   const columns = [
@@ -133,8 +180,48 @@ function App() {
     }
   ];
 
+  const customStyles = {
+    headCells: {
+      style: {
+        backgroundColor: '#f5f5f7',
+        fontWeight: 'bold',
+        textAlign: 'left',
+        padding: '8px',
+      },
+    },
+    pagination: {
+      
+      style: {
+        
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      
+    },
+  };
+  
+
   return (
     <div className="App">
+      <Grid container spacing={2} alignItems="center">
+      <Grid item xs={12} sm={9}>
+      <Tabs>
+    <TabList>
+      <Tab onClick={() => handleTabClick(0)}>All Users</Tab>
+      <Tab onClick={() => handleTabClick(1)}>Contributor</Tab>
+      <Tab onClick={() => handleTabClick(2)}>Author</Tab>
+      <Tab onClick={() => handleTabClick(3)}>Administrator</Tab>
+      <Tab onClick={() => handleTabClick(4)}>Subscriber</Tab>
+    </TabList>
+  </Tabs>
+      </Grid>
+      <Grid item xs={12} sm={2}  >
+        <Button onClick={handleOpen} fullWidth variant="contained" style={{ backgroundColor: '#2940D3', color: 'white',height: '50px'  }} >
+          <Typography variant="body2" >Add New User</Typography>
+        </Button>
+      </Grid>
+    </Grid>
       <Grid container spacing={2} alignItems="center">
       <Grid item xs={10}>
         <TextField
@@ -165,6 +252,7 @@ function App() {
         selectableRows
         fixedHeader
         pagination
+        customStyles={customStyles}
       />
     </div>
   );

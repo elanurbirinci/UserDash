@@ -2,4 +2,9 @@
   text-align: center;
 }
 
-
+.react-tabs__tab--selected {
+  border: none; /* Tüm kenarlıkları kaldır */
+  padding-bottom: 26.5px; /* Alt çizgi ile metin arasındaki boşluğu ayarla */
+  border-bottom: 2px solid #2940D3; /* Sadece alt çizgi ekle (mavi) */
+  color: #2940D3; /* Metin rengi (mavi) */
+}
