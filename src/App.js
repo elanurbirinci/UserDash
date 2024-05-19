@@ -39,11 +39,11 @@ function App() {
   };
 
   const avatars = [
-    'https://placehold.co/600x400/orange/white',
-    'https://placehold.co/30x30',
-    'https://placehold.co/600x400/orange/white',
-    'https://placehold.co/30x30',
-    'https://placehold.co/600x400/orange/white',
+    'https://randomuser.me/api/portraits/men/1.jpg',
+    'https://randomuser.me/api/portraits/women/2.jpg',
+    'https://randomuser.me/api/portraits/men/3.jpg',
+    'https://randomuser.me/api/portraits/women/4.jpg',
+    'https://randomuser.me/api/portraits/men/5.jpg',
   ];
 
   const columns = [
@@ -94,76 +94,78 @@ function App() {
   const data = [
     {
       id: 1,
-      name: 'ela',
-      username: 'yılmaz',
+      name: 'Ela',
+      username: 'Yılmaz',
       email: 'kfc@vfkvf',
       role: 'Editor',
-      
+      selectedAvatar: avatars[0]
     },
     {
       id: 2,
-      name: 'leyla',
-      username: 'yılmaz',
+      name: 'Leyla',
+      username: 'Yılmaz',
       email: 'kc@vff',
-      role: 'Author'
+      role: 'Author',
+      selectedAvatar: avatars[1]
     },
     {
       id: 3,
-      name: 'ali',
-      username: 'yılmaz',
+      name: 'Ali',
+      username: 'Yılmaz',
       email: 'kfkc@f',
-      role: ''
+      role: '',
+      selectedAvatar: avatars[2]
     },
     {
       id: 4,
-      name: 'veli',
-      username: 'demir',
+      name: 'Veli',
+      username: 'Demir',
       email: 'veli@demir.com',
-      role: 'Administrator'
+      role: 'Administrator',
+      selectedAvatar: avatars[3]
     },
     {
       id: 5,
-      name: 'ayşe',
-      username: 'kara',
+      name: 'Ayşe',
+      username: 'Kara',
       email: 'ayse@kara.com',
-      role: 'Subscriber'
+      role: 'Subscriber',
+      selectedAvatar: avatars[4]
     },
     {
       id: 6,
-      name: 'fatma',
-      username: 'sarı',
+      name: 'Fatma',
+      username: 'Sarı',
       email: 'fatma@sarı.com',
-      role: 'Contributor'
+      role: 'Contributor',
+      selectedAvatar: avatars[0]
     }
   ];
 
   const [records, setRecords] = useState(data);
   const [open, setOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
-    id: null,
     name: '',
     username: '',
     email: '',
     role: '',
     selectedAvatar: null
   });
-
-  const [activeTab, setActiveTab] = useState(0); // Aktif sekmenin indeksini tutmak için state
+  const [selectedRows, setSelectedRows] = useState([]); // Seçilen satırları takip etmek için state
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5); // Sayfa başına gösterilecek kayıt sayısı
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // Tab tıklamasını işleyen fonksiyon
   const handleTabClick = (index) => {
-    setActiveTab(index); // Aktif sekme indeksini güncelle
-    setCurrentPage(1); // Tab değiştirildiğinde sayfayı birinci sayfaya ayarla
+    setActiveTab(index);
+    setCurrentPage(1);
   };
 
-  // Aktif sekmenin role değerini belirlemek için bir fonksiyon
   const getRoleFilter = () => {
     switch (activeTab) {
       case 0:
-        return true; // Tüm kullanıcıları göstermek için filtre yok
+        return true;
       case 1:
         return 'Contributor';
       case 2:
@@ -177,29 +179,26 @@ function App() {
     }
   };
 
-  // DataTable bileşeni için role göre filtreleme işlevi
   const filteredRecords = records.filter(record => {
     if (activeTab === 0) {
-      return true; // Tüm kullanıcıları göstermek için filtre yok
+      return true;
     } else {
       return record.role === getRoleFilter();
     }
   });
 
-  // Sayfalanmış veriler
   const paginatedRecords = filteredRecords.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   function handleFilter(event) {
     const searchQuery = event.target.value.toLowerCase();
     const newData = data.filter(row => {
-      // İsim veya e-posta alanında arama yap
       return (
         row.name.toLowerCase().includes(searchQuery) ||
         row.email.toLowerCase().includes(searchQuery)
       );
     });
     setRecords(newData);
-    setCurrentPage(1); // Filtre değiştiğinde sayfayı birinci sayfaya ayarla
+    setCurrentPage(1);
   }
 
   function handleEdit(row) {
@@ -220,6 +219,11 @@ function App() {
     setRecords(newData);
   }
 
+  function handleDeleteAll() {
+    const newData = records.filter(row => !selectedRows.includes(row.id));
+    setRecords(newData);
+  }
+
   function handleAvatarSelect(id) {
     const updatedRecords = records.map(row => {
       if (row.id === id) {
@@ -231,22 +235,16 @@ function App() {
     setOpen(false);
   }
 
-  function handleDeleteAll() {
-    const newData = records.filter(row => !row.selected);
-    setRecords(newData);
-  }
-
   const handleOpen = () => {
     setOpen(true);
-    setIsEditMode(false);
     setFormData({
-      id: null,
       name: '',
       username: '',
       email: '',
       role: '',
       selectedAvatar: null
     });
+    setIsEditMode(false);
   };
 
   const handleClose = () => setOpen(false);
@@ -261,9 +259,7 @@ function App() {
 
   const handleSubmit = () => {
     if (isEditMode) {
-      const updatedRecords = records.map(row => 
-        row.id === formData.id ? formData : row
-      );
+      const updatedRecords = records.map(row => row.id === formData.id ? formData : row);
       setRecords(updatedRecords);
     } else {
       const newRecord = {
@@ -277,6 +273,10 @@ function App() {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+  }
+
+  const handleRowSelected = state => {
+    setSelectedRows(state.selectedRows.map(row => row.id)); // Seçilen satırların ID'lerini güncelle
   }
 
   return (
@@ -330,6 +330,7 @@ function App() {
         fixedHeader
         pagination={false}
         customStyles={customStyles}
+        onSelectedRowsChange={handleRowSelected}
       />
       <CustomPagination count={Math.ceil(filteredRecords.length / rowsPerPage)} color="primary" onChange={handlePageChange} />
 
