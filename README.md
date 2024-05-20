@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Kullanıcı Yönetim Paneli
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bu proje, React kullanılarak oluşturulmuş bir Kullanıcı Yönetim Panelidir. Arayüz bileşenleri için Material-UI ve kullanıcı verilerini tablo formatında görüntülemek için react-data-table-component kullanılmıştır. Kullanıcı ekleme, düzenleme, silme ve filtreleme gibi işlevleri sağlar. Ayrıca, sayfalama görünümlerini ve rol tabanlı filtrelemeyi destekler.
 
-## Available Scripts
+## Kurulum
 
-In the project directory, you can run:
+1.Depoyu klonlayın.
+2.Proje dizinine gidin.
+3.Bağımlılıkları yükleyin:
 
-### `npm start`
+### 'npm install'
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Uygulamayı Çalıştırma
+Uygulamayı başlatmak için şunu çalıştırın:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 'npm start'
 
-### `npm test`
+Bu, geliştirme sunucusunu başlatacak ve uygulamayı varsayılan web tarayıcınızda http://localhost:3000 adresinde açacaktır.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Uygulama Özellikleri
+Yeni Kullanıcı Ekleme: İsim, kullanıcı adı, e-posta, rol ve avatar seçimi gibi detayları olan yeni kullanıcıların eklenmesine olanak tanır.
+Kullanıcıyı Düzenleme: Mevcut kullanıcı detaylarının düzenlenmesini sağlar.
+Kullanıcıyı Silme: Tek tek veya çoklu olarak seçilen kullanıcıların silinmesini sağlar.
+Kullanıcıları Filtreleme: İsim veya e-posta ile kullanıcıları filtrelemek için bir arama çubuğu içerir.
+Rol Bazlı Filtreleme: All Users, Contributor, Author, Administrator ve Subscriber gibi rollerine göre filtrelenir.
+Sayfalama: Büyük kullanıcı veri setlerini yönetmek için sayfalama desteği sağlar.
+Özelleştirilebilir Avatarlar: Kullanıcılar önceden tanımlanmış bir avatar kümesinden seçim yapabilir.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Kullanılan Teknolojiler
+React: Kullanıcı arayüzleri oluşturmak için JavaScript kütüphanesi.
+Material-UI: Hızlı ve kolay web geliştirme için React bileşenleri.
+react-data-table-component: Verileri görüntülemek için basit ve özelleştirilebilir bir tablo bileşeni.
+react-tabs: Sekmeli arayüzler oluşturmak için bir bileşen.
+randomuser.me: Rastgele kullanıcı avatarları oluşturmak için kullanılmıştır.
